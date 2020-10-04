@@ -1,13 +1,7 @@
+<jsp:include page="includes/header.jsp" />
 <%@page import="java.util.ArrayList"%>
 <%@page import="br.edu.fatecpg.poo.Disciplina"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>P1 POO</title>
-    </head>
-    <body>
+<main>
         <h1>Disciplinas</h1>
         <%
             //Criando objeto Disciplina
@@ -60,5 +54,4 @@
                     <%}
                 %>
         </table>
-    </body>
-</html>
+<jsp:include page="includes/footer.jsp" />
