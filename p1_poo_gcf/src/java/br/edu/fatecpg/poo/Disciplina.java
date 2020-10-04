@@ -6,7 +6,7 @@ public class Disciplina {
     String nome;
     String ementa;
     int ciclo;
-    int nota;
+    double nota;
     
     public Disciplina(String nome, String ementa, int ciclo) {
         this.nome = nome;
@@ -58,11 +58,11 @@ public class Disciplina {
         this.ciclo = ciclo;
     }
 
-    public int getNota() {
+    public double getNota() {
         return nota;
     }
 
-    public void setNota(int nota) {
+    public void setNota(double nota) {
         this.nota = nota;
     }
 }
