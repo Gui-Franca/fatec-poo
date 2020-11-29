@@ -1,8 +1,11 @@
 package br.edu.fatecpg.poo;
 
+import static br.edu.fatecpg.poo.DBListenerP2.getConnection;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class Disciplina {
+    public static final String URL = "jdbc:sqlite:D:\\projetos_github\\p1_gcf\\fatec-poo\\p2.db";
     String nome;
     String ementa;
     int ciclo;
@@ -14,24 +17,24 @@ public class Disciplina {
         this.ciclo = ciclo;
     }
     
-    public Disciplina getList(int i){
-        
-        Disciplina disc1 = new Disciplina("POO","Ementa POO",4);
-        Disciplina disc2 = new Disciplina("SO2","Ementa SO2",4);
-        Disciplina disc3 = new Disciplina("BD","Ementa BD",4);
-        Disciplina disc4 = new Disciplina("SI","Ementa SI",4);
-        Disciplina disc5 = new Disciplina("ES3","Ementa ES3",4);
-        Disciplina disc6 = new Disciplina("MetPesq","Ementa MetPesq",4);
-        
-        ArrayList<Disciplina> disciplinas = new ArrayList<Disciplina>();
-        disciplinas.add(disc1);
-        disciplinas.add(disc2);
-        disciplinas.add(disc3);
-        disciplinas.add(disc4);
-        disciplinas.add(disc5);
-        disciplinas.add(disc6);
-        
-        return disciplinas.get(i);
+    
+    
+    public static void insertDisciplina(String name, String ementa, int ciclo, int nota) throws Exception{
+        Class.forName("org.sqlite.JDBC");
+        Connection con = DriverManager.getConnection(URL);
+        Statement stmt = con.createStatement();
+        stmt.execute("INSERT INTO disciplinas VALUES('"+name+","+ementa+","+ciclo+","+nota+"')");
+        stmt.close();
+        con.close();
+    }
+    
+    public static void deleteDisciplina(String name) throws Exception{
+        Class.forName("org.sqlite.JDBC");
+        Connection con = DriverManager.getConnection(URL);
+        Statement stmt = con.createStatement();
+        stmt.execute("DELETE FROM disciplinas WHERE name = '"+name+"'");
+        stmt.close();
+        con.close();
     }
     
     public String getNome() {
