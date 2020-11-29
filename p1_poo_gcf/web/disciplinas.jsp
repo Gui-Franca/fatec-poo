@@ -8,7 +8,7 @@
     String errorMessage = null;
     try{
         if(request.getParameter("insert")!=null){
-            String name = request.getParameter("name");
+            String nome = request.getParameter("nome");
             String ementa = request.getParameter("ementa");
             String ciclo = request.getParameter("ciclo");
             String nota = request.getParameter("nota");
@@ -16,7 +16,7 @@
             int cicloConv = Integer.parseInt(ciclo);
             int notaConv = Integer.parseInt(nota);
             
-            Disciplina.insertDisciplina(name,ementa,cicloConv,notaConv);
+            Disciplina.insertDisciplina(nome,ementa,cicloConv,notaConv);
             response.sendRedirect(request.getRequestURI());
         }
     }catch(Exception ex){
@@ -40,7 +40,7 @@
 %>
     
     <form>
-            Nome: <input type="text" name="name" />
+            Nome: <input type="text" name="nome" />
             Ementa: <input type="text" name="ementa" />
             Ciclo: <input type="text" name="ciclo" />
             Nota: <input type="text" name="nota" />
