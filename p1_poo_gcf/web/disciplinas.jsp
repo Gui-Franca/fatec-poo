@@ -1,33 +1,57 @@
+<%@page import="br.edu.fatecpg.poo.DBListenerP2"%>
 <jsp:include page="includes/header.jsp" />
 <%@page import="java.util.ArrayList"%>
 <%@page import="br.edu.fatecpg.poo.Disciplina"%>
 <main>
+    
+    <%
+    String errorMessage = null;
+    try{
+        if(request.getParameter("insert")!=null){
+            String nome = request.getParameter("nome");
+            String ementa = request.getParameter("ementa");
+            String ciclo = request.getParameter("ciclo");
+            String nota = request.getParameter("nota");
+            
+            int cicloConv = Integer.parseInt(ciclo);
+            int notaConv = Integer.parseInt(nota);
+            
+            Disciplina.insertDisciplina(nome,ementa,cicloConv,notaConv);
+            response.sendRedirect(request.getRequestURI());
+        }
+    }catch(Exception ex){
+        errorMessage = "Erro ao inserir nova tarefa"+ex.getMessage();
+    }
+    try{
+        if(request.getParameter("delete")!=null){
+            String name = request.getParameter("name");
+            Disciplina.deleteDisciplina(name);
+            response.sendRedirect(request.getRequestURI());
+        }
+    }catch(Exception ex){
+        errorMessage = "Erro ao excluir tarefa"+ex.getMessage();
+    }
+    ArrayList<String> disciplinas = new ArrayList<>();
+    try{
+        disciplinas = DBListenerP2.getDisciplinas();
+    }catch(Exception ex){
+        errorMessage = "Erro ao excluir tarefa"+ex.getMessage();
+    }
+%>
+    
+    <form>
+            Nome: <input type="text" name="nome" />
+            Ementa: <input type="text" name="ementa" />
+            Ciclo: <input type="text" name="ciclo" />
+            Nota: <input type="text" name="nota" />
+            <input type="submit" name="insert" value="Inserir tarefa" />
+        </form>
+        <hr/>
+        <%if(errorMessage!=null){%>
+            <div style="color: red"><%= errorMessage %></div>
+            <hr/>
+        <%}%>
         <h1>Disciplinas</h1>
-        <%
-            //Criando objeto Disciplina
-            Disciplina disc = new Disciplina("","",2);
-            disc.getList(1);
-            //Criando arrayList disciplina
-            ArrayList<Disciplina> disciplinas = new ArrayList<Disciplina>();
-            //Populando ArrayList
-            for(int y=0; y<6;y++){
-                disciplinas.add(disc.getList(y));
-            }
-            if (request.getParameter("atualiza") != null) {
-                int i = Integer.parseInt(request.getParameter("x"));
-                Disciplina altera = disciplinas.get(i);
-                try{
-                String txt = request.getParameter("notaAtt");
-                double num = Double.parseDouble(txt);
-                altera.setNota(num);
-                }catch(Exception ex){
-                    ex.getMessage();
-                }
-                response.sendRedirect(request.getRequestURI());
-            }
-
-        
-        %>
         <table border="1">
             <tr>
                 <th>Nome</th>
@@ -35,23 +59,16 @@
                 <th>Ciclo</th>
                 <th>Nota</th>
             </tr>
-                <%
-                    for(int x = 0; x<6;x++){%>
+                <%for(String name: disciplinas){%>
                     <tr>
-                        <% Disciplina d = disciplinas.get(x);%>
-                        <th><%= d.getNome() %></th>
-                        <th><%= d.getEmenta() %></th>
-                        <th><%= d.getCiclo()%></th>
-                        <th><%= d.getNota()%></th>
-                        <td>
-                            <form>
-                                <input type="text" name="notaAtt"/>
-                                <input type="hidden" name="x" value="<%= x%>"/>
-                                <input type="submit" name="atualiza" value="Atualizar"/>
-                            </form>
-                        </td>
-                    </tr>
-                    <%}
-                %>
+                <td><%= name %></td>
+                <td>
+                    <form>
+                        <input type="hidden" name="name" value="<%=name%>"/>
+                        <input type="submit" name="delete" value="Excluir"/>
+                    </form>
+                </td>
+            </tr>
+            <%}%>
         </table>
 <jsp:include page="includes/footer.jsp" />
