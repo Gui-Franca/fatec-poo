@@ -29,6 +29,39 @@ public class Disciplina {
         return list;
     }
     
+    public static void insert(String nome, String ementa, int ciclo, Double nota) throws Exception{
+        Connection con = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        try{
+            con = DBListener.getConnection();
+        stmt = con.prepareStatement("INSERT INTO disciplina VALUES(?,?,?,?)");
+            stmt.setString(1, nome);
+            stmt.setString(2, ementa);
+            stmt.setInt(3, ciclo);
+            stmt.setDouble(4, nota);
+            stmt.execute();
+        } catch(Exception ex){
+            System.out.println(ex);
+        }
+    }
+    
+    public static void delete(long rowid){
+        Connection con = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try{
+            con = DBListener.getConnection();
+            stmt = con.prepareStatement("DELETE FROM disciplina WHERE rowid=?");
+            stmt.setLong(1,rowid);
+            stmt.execute();
+        }catch(Exception ex){
+            System.out.println(ex);
+        }
+        
+        
+    }
     
     
     public Disciplina(long rowid,String nome, String ementa, int ciclo, double nota) {
