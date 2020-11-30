@@ -19,7 +19,7 @@ public class Disciplina {
         try {
             con = DBListener.getConnection();
             stmt = con.createStatement();
-            rs = stmt.executeQuery("Select rowis,* FROM disciplina");
+            rs = stmt.executeQuery("Select rowid,* FROM disciplina");
             while(rs.next()){
                 list.add(new Disciplina(rs.getLong("rowid"), rs.getString("nome"),rs.getString("ementa"),rs.getInt("ciclo"),rs.getDouble("nota")));
             }
