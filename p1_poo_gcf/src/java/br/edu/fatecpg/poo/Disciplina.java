@@ -1,37 +1,50 @@
 package br.edu.fatecpg.poo;
 
+import java.sql.*;
 import java.util.ArrayList;
 
 public class Disciplina {
-    String nome;
-    String ementa;
-    int ciclo;
-    double nota;
+    private long rowid;
+    private String nome;
+    private String ementa;
+    private Integer ciclo;
+    private Double nota;
     
-    public Disciplina(String nome, String ementa, int ciclo) {
+    public static ArrayList<Disciplina> getList(){
+        ArrayList<Disciplina> list = new ArrayList<>();
+        Connection con = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+        
+        try {
+            con = DBListener.getConnection();
+            stmt = con.createStatement();
+            rs = stmt.executeQuery("Select rowis,* FROM disciplina");
+            while(rs.next()){
+                list.add(new Disciplina(rs.getLong("rowid"), rs.getString("nome"),rs.getString("ementa"),rs.getInt("ciclo"),rs.getDouble("nota")));
+            }
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+        return list;
+    }
+    
+    
+    
+    public Disciplina(long rowid,String nome, String ementa, int ciclo, double nota) {
+        this.rowid = rowid;
         this.nome = nome;
         this.ementa = ementa;
         this.ciclo = ciclo;
+        this.nota = nota;
     }
     
-    public Disciplina getList(int i){
-        
-        Disciplina disc1 = new Disciplina("POO","Ementa POO",4);
-        Disciplina disc2 = new Disciplina("SO2","Ementa SO2",4);
-        Disciplina disc3 = new Disciplina("BD","Ementa BD",4);
-        Disciplina disc4 = new Disciplina("SI","Ementa SI",4);
-        Disciplina disc5 = new Disciplina("ES3","Ementa ES3",4);
-        Disciplina disc6 = new Disciplina("MetPesq","Ementa MetPesq",4);
-        
-        ArrayList<Disciplina> disciplinas = new ArrayList<Disciplina>();
-        disciplinas.add(disc1);
-        disciplinas.add(disc2);
-        disciplinas.add(disc3);
-        disciplinas.add(disc4);
-        disciplinas.add(disc5);
-        disciplinas.add(disc6);
-        
-        return disciplinas.get(i);
+    public long getRowid() {
+        return rowid;
+    }
+
+    public void setRowid(long rowid) {
+        this.rowid = rowid;
     }
     
     public String getNome() {
@@ -65,4 +78,14 @@ public class Disciplina {
     public void setNota(double nota) {
         this.nota = nota;
     }
+    
+    public static String getCreateStatement(){
+        return "CREATE TABLE IF NOT EXISTS disciplina("
+                +"nome VARCHAR(50) UNIQUE NOT NULL,"
+                +"ementa VARCHAR(200) NOT NULL,"
+                +"ciclo INT NOT NULL,"
+                +"nota INT NOT NULL"
+                +")";
+    }
+    
 }
